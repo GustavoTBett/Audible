@@ -1,6 +1,6 @@
 package com.gustavotbett.audible;
 
-import com.gustavotbett.audible.data.UserRepository;
+import com.gustavotbett.audible.data.repository.UserRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
 import javax.sql.DataSource;

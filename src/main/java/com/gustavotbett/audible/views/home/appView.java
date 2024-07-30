@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
@@ -21,11 +22,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 @PageTitle("Home")
 @Route(value = "")
 @PermitAll
-public class HomeView extends VerticalLayout {
+public class AppView extends VerticalLayout {
 
     @Autowired
     private AuthenticatedUser authenticatedUser;
@@ -35,7 +39,9 @@ public class HomeView extends VerticalLayout {
 
     private String prompt = "Please select an audio transcription";
 
-    public HomeView() {
+    private static final int CHUNK_SIZE = 20 * 1024 * 1024;
+
+    public AppView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");
@@ -48,8 +54,8 @@ public class HomeView extends VerticalLayout {
         add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
 
         setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         getStyle().set("text-align", "center");
 
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
@@ -62,14 +68,17 @@ public class HomeView extends VerticalLayout {
             InputStream inputStream = buffer.getInputStream(fileName);
 
             try {
-                File tempFile = convertInputStreamToFile(inputStream, fileName);
 
-                OpenAiService openAiService = new OpenAiService(apiKey);
-                CreateTranscriptionRequest createTranscriptionRequest = new CreateTranscriptionRequest();
-                createTranscriptionRequest.setModel("whisper-1");
-                prompt = openAiService.createTranscription(createTranscriptionRequest, tempFile).getText();
+                if (inputStream.available() > CHUNK_SIZE) {
+                    List<File> tempFiles = splitFile(inputStream, fileName);
+                    for (File file : tempFiles) {
+                        processFile(file);
+                    }
+                } else {
+                    File tempFile = convertInputStreamToFile(inputStream, fileName);
+                    processFile(tempFile);
+                }
 
-                add(new Paragraph(prompt));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -84,6 +93,17 @@ public class HomeView extends VerticalLayout {
             authenticatedUser.logout();
         });
         add(btn);
+    }
+
+    private void processFile(File file) {
+        if (file.length() <= CHUNK_SIZE) {
+            OpenAiService openAiService = new OpenAiService(apiKey, Duration.ofHours(1));
+            CreateTranscriptionRequest createTranscriptionRequest = new CreateTranscriptionRequest();
+            createTranscriptionRequest.setModel("whisper-1");
+            prompt = openAiService.createTranscription(createTranscriptionRequest, file).getText();
+            add(new Paragraph(prompt));
+        }
+
     }
 
     private File convertInputStreamToFile(InputStream inputStream, String fileName) throws IOException {
@@ -106,6 +126,25 @@ public class HomeView extends VerticalLayout {
         tempFile.deleteOnExit();
 
         return tempFile;
+    }
+
+    public List<File> splitFile(InputStream inputStream, String fileName) throws IOException {
+        List<File> files = new ArrayList<>();
+        byte[] buffer = new byte[CHUNK_SIZE];
+        int bytesRead;
+        int partNumber = 0;
+
+        while ((bytesRead = inputStream.read(buffer)) > 0) {
+            String partFileName = String.format("%s_part%d.tmp", fileName, partNumber++);
+            File partFile = Files.createTempFile(partFileName, ".mp3").toFile();
+            try (FileOutputStream fos = new FileOutputStream(partFile)) {
+                fos.write(buffer, 0, bytesRead);
+            }
+            partFile.deleteOnExit(); // Ensure temp file is deleted on exit
+            files.add(partFile);
+        }
+
+        return files;
     }
 
 }

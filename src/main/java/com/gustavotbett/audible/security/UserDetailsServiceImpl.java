@@ -1,7 +1,8 @@
 package com.gustavotbett.audible.security;
 
-import com.gustavotbett.audible.data.User;
-import com.gustavotbett.audible.data.UserRepository;
+import com.gustavotbett.audible.data.entity.User;
+import com.gustavotbett.audible.data.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,17 +25,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getHashedPassword(),
-                    getAuthorities(user));
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getHashedPassword(),
+                    getAuthorities());
         }
     }
 
-    private static List<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+    private static List<GrantedAuthority> getAuthorities() {
+        List lista = new ArrayList();
+        lista.add("ADMIN");
+        
+        return (List<GrantedAuthority>) lista.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
 
     }

@@ -1,7 +1,7 @@
 package com.gustavotbett.audible.security;
 
-import com.gustavotbett.audible.data.User;
-import com.gustavotbett.audible.data.UserRepository;
+import com.gustavotbett.audible.data.entity.User;
+import com.gustavotbett.audible.data.repository.UserRepository;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +22,7 @@ public class AuthenticatedUser {
     @Transactional
     public Optional<User> get() {
         return authenticationContext.getAuthenticatedUser(UserDetails.class)
-                .map(userDetails -> userRepository.findByUsername(userDetails.getUsername()));
+                .map(userDetails -> userRepository.findByEmail(userDetails.getUsername()));
     }
 
     public void logout() {
