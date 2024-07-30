@@ -4,6 +4,9 @@
 .settings
 .project
 .classpath
+nbactions.xml
+package-lock.json
+package.json
 
 *.iml
 .DS_Store
