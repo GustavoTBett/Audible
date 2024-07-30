@@ -1,4 +1,4 @@
-package com.gustavotbett.audible.data;
+package com.gustavotbett.audible.data.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

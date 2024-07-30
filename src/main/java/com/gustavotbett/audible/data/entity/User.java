@@ -1,7 +1,6 @@
 package com.gustavotbett.audible.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gustavotbett.audible.data.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
