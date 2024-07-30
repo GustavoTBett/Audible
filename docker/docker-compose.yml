@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  audible:
+    container_name: audible
+    image: postgres:16
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_USER: audible_admin
+    volumes:
+          - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}
