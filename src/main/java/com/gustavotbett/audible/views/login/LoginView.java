@@ -78,9 +78,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         loginForm.setI18n(i18n);
         loginForm.setAction("login");
-        loginForm.addForgotPasswordListener(listener -> {
-            getUI().ifPresent(ui -> ui.navigate("esqueci-a-senha"));
-        });
+        loginForm.setForgotPasswordButtonVisible(false);
+//        loginForm.addForgotPasswordListener(listener -> {
+//            getUI().ifPresent(ui -> ui.navigate("esqueci-a-senha"));
+//        });
 
         Icon vaadinIcon = new Icon(VaadinIcon.PLUS_CIRCLE);
         Button souNovo = new Button("Sou novo", vaadinIcon);

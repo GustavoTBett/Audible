@@ -3,14 +3,26 @@ package com.gustavotbett.audible.views.home;
 import com.gustavotbett.audible.security.AuthenticatedUser;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.service.OpenAiService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.UploadI18N;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
@@ -29,7 +41,7 @@ import java.util.List;
 @PageTitle("Home")
 @Route(value = "")
 @PermitAll
-public class AppView extends VerticalLayout {
+public class AppView extends VerticalLayout implements BeforeEnterObserver {
 
     @Autowired
     private AuthenticatedUser authenticatedUser;
@@ -40,29 +52,45 @@ public class AppView extends VerticalLayout {
     private String prompt = "Please select an audio transcription";
 
     private static final int CHUNK_SIZE = 20 * 1024 * 1024;
+    private String temaLumo;
 
-    public AppView() {
-        setSpacing(false);
+    public void appView() {
+        Icon circuloHalf;
+        if (temaLumo.equals("light")) {
+            circuloHalf = new Icon("moon-o");
+        } else {
+            circuloHalf = new Icon("sun-o");
+        }
+        Button toggleButton = new Button(circuloHalf);
+        toggleButton.addClickListener(click -> {
+            trocaTema();
+            if (temaLumo == null || temaLumo.equals("light")) {
+                toggleButton.setIcon(new Icon("moon-o"));
+            } else {
+                toggleButton.setIcon(new Icon("sun-o"));
+            }
+        });
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
+        Button btn = new Button("Sair");
+        btn.addClickListener(listener -> {
+            authenticatedUser.logout();
+        });
 
-        H2 header = new H2("This place intentionally left empty");
-        header.addClassNames(Margin.Top.XLARGE, Margin.Bottom.MEDIUM);
+        HorizontalLayout headerButtons = new HorizontalLayout(toggleButton, btn);
+        HorizontalLayout header = new HorizontalLayout(new H1("Audible"), headerButtons);
+        header.setWidth("100%");
+        header.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        header.getStyle().set("padding", "5px 20px");
+
         add(header);
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
-
-        setSizeFull();
-        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
-        getStyle().set("text-align", "center");
 
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
         Upload upload = new Upload(buffer);
         upload.setAcceptedFileTypes("application/mp3", ".mp3");
         upload.setAutoUpload(true);
 
+        upload.setI18n(createUploadI18n());
+        upload.setMaxFiles(1);
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
             InputStream inputStream = buffer.getInputStream(fileName);
@@ -74,9 +102,12 @@ public class AppView extends VerticalLayout {
                     for (File file : tempFiles) {
                         processFile(file);
                     }
+
+                    showTranscriptionDialog(prompt);
                 } else {
                     File tempFile = convertInputStreamToFile(inputStream, fileName);
                     processFile(tempFile);
+                    showTranscriptionDialog(prompt);
                 }
 
             } catch (IOException e) {
@@ -86,13 +117,51 @@ public class AppView extends VerticalLayout {
             // processFile(inputStream, fileName);
         });
 
-        add(upload);
+        VerticalLayout layout = new VerticalLayout(upload);
+        layout.setHeight("75vh");
+        layout.setAlignItems(Alignment.CENTER);
+        layout.setJustifyContentMode(JustifyContentMode.CENTER);
+        add(layout);
+    }
 
-        Button btn = new Button("Click me");
-        btn.addClickListener(e -> {
-            authenticatedUser.logout();
+    private void showTranscriptionDialog(String transcriptionText) {
+        Dialog dialog = new Dialog();
+
+        dialog.setHeaderTitle("Texto convertido");
+
+        Span transcriptionParagraph = new Span(transcriptionText);
+        dialog.add(transcriptionParagraph);
+        dialog.setWidth("1000px");
+
+        Button copyButton = new Button("Copiar para a área de transferência", VaadinIcon.COPY.create());
+        copyButton.addClickListener(click -> {
+            getUI().ifPresent(ui -> {
+                ui.getPage().executeJs("navigator.clipboard.writeText($0)", transcriptionText);
+                Notification.show("Texto copiado para a área de transferência");
+            });
         });
-        add(btn);
+
+        Button closeButton = new Button(new Icon("lumo", "cross"),
+                (e) -> dialog.close());
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
+        dialog.getHeader()
+                .add(closeButton);
+        HorizontalLayout buttonsLayout = new HorizontalLayout(copyButton);
+        dialog.add(buttonsLayout);
+
+        dialog.open();
+    }
+
+    private UploadI18N createUploadI18n() {
+        UploadI18N i18n = new UploadI18N();
+        i18n.setDropFiles(new UploadI18N.DropFiles().setOne("Arraste o arquivo MP3 aqui...").setMany("Arraste o arquivo MP3 aqui..."));
+        i18n.setAddFiles(new UploadI18N.AddFiles().setOne("Adicionar arquivo").setMany("Adicionar arquivos"));
+        i18n.setError(new UploadI18N.Error().setTooManyFiles("Arquivos demais.").setFileIsTooBig("O arquivo é muito grande.").setIncorrectFileType("Tipo de arquivo incorreto."));
+        i18n.setUploading(new UploadI18N.Uploading().setStatus(new UploadI18N.Uploading.Status().setConnecting("Conectando...").setStalled("Pausado").setProcessing("Processando..."))
+                .setRemainingTime(new UploadI18N.Uploading.RemainingTime().setPrefix("tempo restante: ").setUnknown("tempo restante desconhecido"))
+                .setError(new UploadI18N.Uploading.Error().setServerUnavailable("Servidor indisponível").setUnexpectedServerError("Erro inesperado no servidor").setForbidden("Proibido")));
+        return i18n;
     }
 
     private void processFile(File file) {
@@ -101,9 +170,7 @@ public class AppView extends VerticalLayout {
             CreateTranscriptionRequest createTranscriptionRequest = new CreateTranscriptionRequest();
             createTranscriptionRequest.setModel("whisper-1");
             prompt = openAiService.createTranscription(createTranscriptionRequest, file).getText();
-            add(new Paragraph(prompt));
         }
-
     }
 
     private File convertInputStreamToFile(InputStream inputStream, String fileName) throws IOException {
@@ -147,4 +214,25 @@ public class AppView extends VerticalLayout {
         return files;
     }
 
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        getElement().executeJs("return document.documentElement.getAttribute('theme')").then(String.class, resultHandler -> {
+            temaLumo = resultHandler;
+            appView();
+        });
+    }
+
+    public void trocaTema() {
+        String js;
+
+        if (temaLumo.equals("light") || temaLumo.equals("")) {
+            js = "document.documentElement.setAttribute('theme', 'dark')";
+            temaLumo = "dark";
+        } else {
+            js = "document.documentElement.setAttribute('theme', 'light')";
+            temaLumo = "light";
+        }
+
+        getElement().executeJs(js, "");
+    }
 }
