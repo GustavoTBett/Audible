@@ -3,14 +3,10 @@ package com.gustavotbett.audible.views.home;
 import com.gustavotbett.audible.security.AuthenticatedUser;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.service.OpenAiService;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -25,7 +21,6 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +44,7 @@ public class AppView extends VerticalLayout implements BeforeEnterObserver {
     @Value("${openai.api.key}")
     private String apiKey;
 
-    private String prompt = "Please select an audio transcription";
+    private String prompt = "";
 
     private static final int CHUNK_SIZE = 20 * 1024 * 1024;
     private String temaLumo;
@@ -169,7 +164,7 @@ public class AppView extends VerticalLayout implements BeforeEnterObserver {
             OpenAiService openAiService = new OpenAiService(apiKey, Duration.ofHours(1));
             CreateTranscriptionRequest createTranscriptionRequest = new CreateTranscriptionRequest();
             createTranscriptionRequest.setModel("whisper-1");
-            prompt = openAiService.createTranscription(createTranscriptionRequest, file).getText();
+            prompt = prompt +  openAiService.createTranscription(createTranscriptionRequest, file).getText();
         }
     }
 
