@@ -102,7 +102,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginForm.setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));
         
         getElement().executeJs("return document.documentElement.getAttribute('theme')").then(String.class, resultHandler -> {
-            temaLumo = resultHandler;
+            if (resultHandler != null) {
+                temaLumo = resultHandler;
+            } else {
+                temaLumo = "light";
+            }
             login();
         });
     }
