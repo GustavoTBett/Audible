@@ -84,7 +84,11 @@ public class HomeView extends VerticalLayout implements BeforeEnterObserver {
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         getElement().executeJs("return document.documentElement.getAttribute('theme')").then(String.class, resultHandler -> {
-            temaLumo = resultHandler;
+            if (resultHandler != null) {
+                temaLumo = resultHandler;
+            } else {
+                temaLumo = "light";
+            }
             LoginView();
         });
     }
