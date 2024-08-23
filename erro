@@ -1,0 +1,129 @@
+java.lang.OutOfMemoryError: Java heap space
+        at java.base/java.util.Arrays.copyOf(Arrays.java:3541) ~[na:na]
+        at java.base/java.io.ByteArrayOutputStream.ensureCapacity(ByteArrayOutputStream.java:100) ~[na:na]
+        at java.base/java.io.ByteArrayOutputStream.write(ByteArrayOutputStream.java:132) ~[na:na]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.streamToReceiver(StreamReceiverHandler.java:541) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleFileUploadValidationAndData(StreamReceiverHandler.java:415) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleStream(StreamReceiverHandler.java:304) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleMultipartFileUploadFromParts(StreamReceiverHandler.java:249) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.doHandleMultipartFileUpload(StreamReceiverHandler.java:202) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleRequest(StreamReceiverHandler.java:162) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamRequestHandler.handleRequest(StreamRequestHandler.java:117) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.VaadinService.handleRequest(VaadinService.java:1584) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.VaadinServlet.service(VaadinServlet.java:398) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.spring.SpringServlet.service(SpringServlet.java:106) ~[vaadin-spring-24.4.4.jar!/:na]
+        at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:632) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:408) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:303) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:267) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.springframework.web.servlet.mvc.ServletForwardingController.handleRequestInternal(ServletForwardingController.java:142) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at org.springframework.web.servlet.mvc.AbstractController.handleRequest(AbstractController.java:178) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:51) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.11.jar!/:6.1.11]
+        at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.26.jar!/:na]
+
+
+com.vaadin.flow.server.UploadException: Upload failed
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.streamToReceiver(StreamReceiverHandler.java:582) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleFileUploadValidationAndData(StreamReceiverHandler.java:415) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleStream(StreamReceiverHandler.java:304) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleMultipartFileUploadFromParts(StreamReceiverHandler.java:249) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.doHandleMultipartFileUpload(StreamReceiverHandler.java:202) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.handleRequest(StreamReceiverHandler.java:162) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.communication.StreamRequestHandler.handleRequest(StreamRequestHandler.java:117) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.VaadinService.handleRequest(VaadinService.java:1584) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.server.VaadinServlet.service(VaadinServlet.java:398) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.spring.SpringServlet.service(SpringServlet.java:106) ~[vaadin-spring-24.4.4.jar!/:na]
+        at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.26.jar!/:na]
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-cor
+
+Caused by: java.lang.RuntimeException: javax.net.ssl.SSLHandshakeException: Remote host terminated the handshake
+        at io.reactivex.internal.util.ExceptionHelper.wrapOrThrow(ExceptionHelper.java:45) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at io.reactivex.internal.observers.BlockingMultiObserver.blockingGet(BlockingMultiObserver.java:90) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at io.reactivex.Single.blockingGet(Single.java:2002) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at com.theokanning.openai.service.OpenAiService.execute(OpenAiService.java:513) ~[service-0.18.2.jar!/:na]
+        at com.theokanning.openai.service.OpenAiService.createTranscription(OpenAiService.java:333) ~[service-0.18.2.jar!/:na]
+        at com.gustavotbett.audible.views.home.AppView.processFile(AppView.java:167) ~[!/:1.0-SNAPSHOT]
+        at com.gustavotbett.audible.views.home.AppView.lambda$appView$7af74760$1(AppView.java:98) ~[!/:1.0-SNAPSHOT]
+        at com.vaadin.flow.component.ComponentEventBus.fireEventForListener(ComponentEventBus.java:239) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.component.ComponentEventBus.fireEvent(ComponentEventBus.java:228) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.component.Component.fireEvent(Component.java:411) ~[flow-server-24.4.4.jar!/:24.4.4]
+        at com.vaadin.flow.component.upload.Upload.fireUploadSuccess(Upload.java:484) ~[vaadin-upload-flow-24.4.6.jar!/:na]
+        at com.vaadin.flow.component.upload.Upload$DefaultStreamVariable.streamingFinished(Upload.java:815) ~[vaadin-upload-flow-24.4.6.jar!/:na]
+        at com.vaadin.flow.server.communication.StreamReceiverHandler.streamToReceiver(StreamReceiverHandler.java:563) ~[flow-server-24.4.4.jar!/:24.4.4]
+        ... 109 common frames omitted
+
+Caused by: javax.net.ssl.SSLHandshakeException: Remote host terminated the handshake
+        at java.base/sun.security.ssl.SSLSocketImpl.handleEOF(SSLSocketImpl.java:1714) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1514) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1421) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:455) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:426) ~[na:na]
+        at okhttp3.internal.connection.RealConnection.connectTls(RealConnection.kt:379) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.RealConnection.establishProtocol(RealConnection.kt:337) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.RealConnection.connect(RealConnection.kt:209) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:226) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.12.0.jar!/:na]
+        at com.theokanning.openai.service.AuthenticationInterceptor.intercept(AuthenticationInterceptor.java:28) ~[service-0.18.2.jar!/:na]
+        at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201) ~[okhttp-4.12.0.jar!/:na]
+        at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154) ~[okhttp-4.12.0.jar!/:na]
+        at retrofit2.OkHttpCall.execute(OkHttpCall.java:204) ~[retrofit-2.9.0.jar!/:na]
+        at retrofit2.adapter.rxjava2.CallExecuteObservable.subscribeActual(CallExecuteObservable.java:46) ~[adapter-rxjava2-2.9.0.jar!/:na]
+        at io.reactivex.Observable.subscribe(Observable.java:10151) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at retrofit2.adapter.rxjava2.BodyObservable.subscribeActual(BodyObservable.java:35) ~[adapter-rxjava2-2.9.0.jar!/:na]
+        at io.reactivex.Observable.subscribe(Observable.java:10151) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at io.reactivex.internal.operators.observable.ObservableSingleSingle.subscribeActual(ObservableSingleSingle.java:35) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at io.reactivex.Single.subscribe(Single.java:2517) ~[rxjava-2.0.0.jar!/:2.0.0]
+        at io.reactivex.Single.blockingGet(Single.java:2001) ~[rxjava-2.0.0.jar!/:2.0.0]
+        ... 119 common frames omitted
+        Suppressed: java.net.SocketException: Broken pipe
+                at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method) ~[na:na]
+                at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62) ~[na:na]
+                at java.base/sun.nio.ch.NioSocketImpl.tryWrite(NioSocketImpl.java:394) ~[na:na]
+                at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:410) ~[na:na]
+                at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:440) ~[na:na]
+                at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:819) ~[na:na]
+                at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1195) ~[na:na]
+                at java.base/sun.security.ssl.SSLSocketOutputRecord.encodeAlert(SSLSocketOutputRecord.java:81) ~[na:na]
+                at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:414) ~[na:na]
+                at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321) ~[na:na]
+                at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:467) ~[na:na]
+                ... 147 common frames omitted
+        Suppressed: javax.net.ssl.SSLHandshakeException: Remote host terminated the handshake
+                ... 151 common frames omitted
+        Caused by: java.io.EOFException: SSL peer shut down incorrectly
+                at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:494)
+                at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+                at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160)
+                at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111)
+                at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1506)
+                ... 149 common frames omitted
+Caused by: java.io.EOFException: SSL peer shut down incorrectly
+        at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:494) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160) ~[na:na]
+        at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111) ~[na:na]
+        at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1506) ~[na:na]
+        ... 149 common frames omitted
+
+2024-08-22T23:35:41.461Z  INFO 2332 --- [audible] [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-08-22T23:35:41.519Z  INFO 2332 --- [audible] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-08-22T23:35:43.013Z  INFO 2332 --- [audible] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
