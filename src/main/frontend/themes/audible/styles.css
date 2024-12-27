@@ -1,0 +1,18 @@
+/* Definir o tamanho das imagens para ajustar-se a uma tela de iPhone 12 */
+.carousel img {
+    width: 100%; /* Responsivo, vai ajustar ao tamanho do container */
+    max-height: 650px; /* Altura aproximada para encaixar no iPhone 12 */
+    object-fit: cover; /* Mantém a proporção sem esticar a imagem */
+    border-radius: 10px; /* Bordas arredondadas, se desejado */
+}
+
+.carousel {
+    width: 200px;
+    max-width: 1170px; /* Tamanho da largura de um iPhone 12 */
+    margin: 0 auto; /* Centraliza o carrossel */
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
