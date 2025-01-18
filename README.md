@@ -63,7 +63,3 @@ docker run -p 8080:8080 audible:latest
 ## Pricing
 
 I use open ai api whisper-1 to make the converter and i estimate that for 30 min audio cost 0.2 cents dollar.
-
-## Site
-
-http://gustavotbett.com.br/home
